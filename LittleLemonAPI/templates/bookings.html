@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="reservations-overview-header">
+  <div class="page-header text-center">
+    <span class="subheading-tag"><i class="fa-solid fa-calendar-days"></i> Restaurant Dashboard</span>
+    <h1>All Table Reservations</h1>
+    <p class="lead-text">
+      Browse confirmed reservations and view Little Lemon's Chicago dining room schedule.
+    </p>
+  </div>
+</section>
+
+<section class="reservations-overview-section">
+  <article class="reservations-article">
+    <!--Begin row-->
+    <div class="row reservations-row">
+      <!--Begin col: Reservations list & cards-->
+      <div class="column reservations-list-column">
+        <div class="reservations-board-card">
+          <div class="board-header">
+            <div>
+              <h3><i class="fa-solid fa-clipboard-list text-green"></i> Active Reservations</h3>
+              <p class="card-subtitle">Showing all current reservations in system</p>
+            </div>
+            <span class="badge-total" id="reservation-counter">Loading...</span>
+          </div>
+
+          <!-- Quick Search Filter -->
+          <div class="search-filter-wrap">
+            <div class="search-input-group">
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              <input type="text" id="search-bookings" placeholder="Search by guest name or date..."
+                class="form-control" />
+            </div>
+          </div>
+
+          <!-- Visual cards container for guests -->
+          <div id="reservations-visual-container" class="reservations-cards-container">
+            <!-- Dynamically populated from JSON -->
+          </div>
+
+          <!-- Developer JSON View (Accordion) -->
+          <div class="raw-json-accordion">
+            <details>
+              <summary><i class="fa-solid fa-code"></i> Developer API Inspection (Raw JSON)</summary>
+              <pre id="bookings" class="raw-json-pre"></pre>
+            </details>
+          </div>
+        </div>
+      </div>
+      <!--End col-->
+
+      <!--Begin col: Location & Map-->
+      <div class="column location-info-column">
+        <div class="location-card">
+          <div class="location-header">
+            <h3><i class="fa-solid fa-location-dot text-yellow"></i> Find Little Lemon</h3>
+            <p class="card-subtitle">Hyde Park, Chicago &bull; Authentic Mediterranean Dining</p>
+          </div>
+
+          <div class="videowrap map-container">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11898.289517452584!2d-87.60853049433447!3d41.79442860243028!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e2912ce6f7027%3A0xc0cfb5545d4a37b2!2sHyde%20Park%2C%20Chicago%2C%20IL%2C%20USA!5e0!3m2!1sen!2spt!4v1662384760663!5m2!1sen!2spt"
+              width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade" title="Little Lemon Restaurant Map Location"></iframe>
+          </div>
+
+          <div class="location-details-box">
+            <div class="loc-detail-item">
+              <i class="fa-solid fa-map-pin"></i>
+              <div>
+                <strong>Address:</strong>
+                <p>123 Mediterranean Way, Hyde Park, Chicago, IL 60637</p>
+              </div>
+            </div>
+            <div class="loc-detail-item">
+              <i class="fa-solid fa-phone"></i>
+              <div>
+                <strong>Telephone:</strong>
+                <p>(312) 555-LEMON (5366)</p>
+              </div>
+            </div>
+            <div class="loc-detail-item">
+              <i class="fa-solid fa-square-parking"></i>
+              <div>
+                <strong>Parking &amp; Transit:</strong>
+                <p>Complimentary valet on weekends; accessible via CTA Green Line.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-action text-center mt-3">
+            <a href="https://maps.google.com/?q=Hyde+Park,+Chicago,+IL" target="_blank" rel="noopener noreferrer"
+              class="btn-directions">
+              <i class="fa-solid fa-diamond-turn-right"></i> Get Driving Directions
+            </a>
+          </div>
+        </div>
+      </div>
+      <!--End col-->
+    </div>
+    <!--End row-->
+  </article>
+</section>
+
+<!-- Add your code inside the script tags below  -->
+<script>
+  let allBookingsData = [];
+  try {
+    allBookingsData = JSON.parse('{{ bookings|safe }}');
+  } catch (e) {
+    console.error("Could not parse bookings:", e);
+    allBookingsData = [];
+  }
+
+  console.log(allBookingsData);
+  const pretty_json = JSON.stringify(allBookingsData, null, 2);
+  const bookingsPre = document.getElementById('bookings');
+  if (bookingsPre) {
+    bookingsPre.innerHTML = pretty_json;
+  }
+
+  function formatTime(time) {
+    const ampm = time < 12 ? 'AM' : 'PM';
+    const t = time < 12 ? time : time > 12 ? time - 12 : time;
+    return `${t}:00 ${ampm}`;
+  }
+
+  function renderVisualCards(items) {
+    const container = document.getElementById('reservations-visual-container');
+    const counter = document.getElementById('reservation-counter');
+    if (counter) {
+      counter.innerText = `${items.length} ${items.length === 1 ? 'Reservation' : 'Reservations'}`;
+    }
+
+    if (!container) return;
+
+    if (!items || items.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state-reservations">
+          <i class="fa-regular fa-calendar-xmark"></i>
+          <h4>No Reservations Found</h4>
+          <p>No table bookings match your search query or have been placed yet.</p>
+          <a href="{% url 'book' %}" class="btn-primary-small mt-2"><i class="fa-regular fa-calendar-plus"></i> Reserve a Table</a>
+        </div>
+      `;
+      return;
+    }
+
+    let html = '';
+    items.forEach(item => {
+      const f = item.fields || {};
+      const initials = (f.first_name || 'G').split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+      const slotTime = formatTime(f.reservation_slot || 12);
+
+      html += `
+        <div class="reservation-ticket">
+          <div class="ticket-avatar">
+            <span>${initials}</span>
+          </div>
+          <div class="ticket-info">
+            <h4 class="guest-name">${f.first_name || 'Guest'}</h4>
+            <div class="ticket-meta">
+              <span><i class="fa-regular fa-calendar"></i> ${f.reservation_date || 'N/A'}</span>
+              <span><i class="fa-regular fa-clock"></i> ${slotTime}</span>
+            </div>
+          </div>
+          <div class="ticket-status">
+            <span class="status-pill confirmed"><i class="fa-solid fa-circle-check"></i> Confirmed</span>
+          </div>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+  }
+
+  renderVisualCards(allBookingsData);
+
+  // Search filter interaction
+  const searchInput = document.getElementById('search-bookings');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      if (!query) {
+        renderVisualCards(allBookingsData);
+        return;
+      }
+      const filtered = allBookingsData.filter(item => {
+        const name = (item.fields?.first_name || '').toLowerCase();
+        const dateStr = (item.fields?.reservation_date || '').toLowerCase();
+        return name.includes(query) || dateStr.includes(query);
+      });
+      renderVisualCards(filtered);
+    });
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="reservation-page-header">
+  <div class="page-header text-center">
+    <span class="subheading-tag"><i class="fa-solid fa-chair"></i> Online Table Reservations</span>
+    <h1>Make a Reservation</h1>
+    <p class="lead-text">
+      Reserve your table in seconds. Choose your date and preferred time slot below.
+    </p>
+  </div>
+</section>
+
+<section class="reservation-section">
+  <article class="reservation-card-wrapper">
+    <!--Begin row-->
+    <div class="row reservation-row">
+      <!--Begin col: Booking Form-->
+      <div class="column reservation-form-column">
+        <div class="form-container-card">
+          <div class="card-header-styled">
+            <div class="header-icon-circle">
+              <i class="fa-regular fa-calendar-plus"></i>
+            </div>
+            <div>
+              <h3>Book Your Table</h3>
+              <p class="card-subtitle">Instant confirmation &bull; No deposit required</p>
+            </div>
+          </div>
+
+          <!-- Alert feedback container -->
+          <div id="booking-alert" class="booking-alert" style="display: none;" role="alert"></div>
+
+          {% csrf_token %}
+          <form method="POST" id="form" class="styled-booking-form" novalidate>
+            <div class="form-group">
+              <label for="first_name">
+                <i class="fa-regular fa-user"></i> Full Name:
+              </label>
+              <div class="input-with-icon">
+                <input type="text" placeholder="Enter your name (e.g. Mario Rossi)" maxlength="200" required=""
+                  id="first_name" class="form-control" autocomplete="name" />
+              </div>
+              <small class="form-hint">Reservation will be placed under this name.</small>
+            </div>
+
+            <!-- Step 9: Part one -->
+            <div class="form-group">
+              <label for="reservation_date">
+                <i class="fa-regular fa-calendar"></i> Reservation Date:
+              </label>
+              <div class="input-with-icon">
+                <input type="date" placeholder="Reservation Date" required="" id="reservation_date"
+                  class="form-control" />
+              </div>
+              <small class="form-hint">Select any date to view real-time slot availability.</small>
+            </div>
+
+            <div class="form-group">
+              <label for="reservation_slot">
+                <i class="fa-regular fa-clock"></i> Reservation Time:
+              </label>
+              <div class="input-with-icon">
+                <select id="reservation_slot" class="form-control select-control">
+                  <option value="0" disabled>Select time</option>
+                </select>
+              </div>
+              <small class="form-hint">Slots marked unavailable are already booked.</small>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" id="button" class="btn-submit-booking">
+                <i class="fa-solid fa-check"></i> Reserve Table
+              </button>
+            </div>
+          </form>
+
+          <!-- Reservation guarantees -->
+          <div class="booking-guarantees">
+            <div class="guarantee-item">
+              <i class="fa-solid fa-shield-halved"></i>
+              <span>Free cancellation up to 1 hr prior</span>
+            </div>
+            <div class="guarantee-item">
+              <i class="fa-solid fa-hourglass-half"></i>
+              <span>Table held for 15 minutes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End col-->
+
+      <!--Begin col: Bookings Preview-->
+      <div class="column reservation-preview-column">
+        <div class="preview-container-card">
+          <div class="preview-header">
+            <div class="preview-badge">
+              <i class="fa-solid fa-table-list"></i> Live Schedule
+            </div>
+            <h2>Bookings For <span id="today" class="highlight-date"></span></h2>
+            <p class="preview-description">
+              Current confirmed table reservations for the selected date.
+            </p>
+          </div>
+
+          <div class="bookings-list-container">
+            <div id="bookings" class="bookings-timeline">
+              <!-- Dynamically populated by JS getBookings() -->
+            </div>
+          </div>
+
+          <div class="dining-info-box">
+            <h4><i class="fa-solid fa-circle-info"></i> Dining Guidelines</h4>
+            <ul>
+              <li>For parties larger than 8 guests, please call us directly at <strong>(312) 555-5366</strong>.</li>
+              <li>Outdoor patio seating is subject to weather conditions.</li>
+              <li>Please notify our staff upon arrival of any dietary restrictions or allergies.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!--End col-->
+    </div>
+    <!--End row-->
+  </article>
+</section>
+
+<script>
+  // Ensure formatted ISO date YYYY-MM-DD
+  const date = new Date()
+  const yyyy = date.getFullYear()
+  const mm = String(date.getMonth() + 1).padStart(2, "0")
+  const dd = String(date.getDate()).padStart(2, "0")
+  const todayStr = `${yyyy}-${mm}-${dd}`
+
+  const dateInput = document.getElementById('reservation_date')
+  dateInput.value = todayStr
+  dateInput.min = todayStr // Prevent booking in the past
+
+  console.log(dateInput.value);
+  getBookings()
+
+  /* Step 10: Part two */
+  dateInput.addEventListener('change', function () {
+    getBookings()
+  });
+
+  function getBookings() {
+    let reserved_slots = []
+    const dateVal = document.getElementById('reservation_date').value
+    document.getElementById('today').innerHTML = dateVal
+
+    fetch("{% url 'bookings' %}" + '?date=' + dateVal)
+      .then(r => r.json())
+      .then(data => {
+        reserved_slots = []
+        let bookings = ''
+        console.log(data);
+        /* Step 11: Part three */
+        for (let i = 0; i < data.length; i++) {
+          item = data[i];
+          console.log("item,slot:", item.fields.reservation_slot);
+          reserved_slots.push(item.fields.reservation_slot);
+          bookings += `<p class="booking-entry"><span class="guest-name"><i class="fa-solid fa-user-check"></i> ${item.fields.first_name}</span><span class="booking-slot-badge"><i class="fa-regular fa-clock"></i> ${formatTime(item.fields.reservation_slot)}</span></p>`;
+        }
+
+        console.log('reserved_slots=', reserved_slots);
+        /* Step 12: Part four */
+        let slot_options = '<option value="0" disabled selected>Select time</option>'
+        for (let i = 11; i < 20; i++) {
+          label = formatTime(i);
+          if (reserved_slots.includes(i)) {
+            slot_options += `<option value="${i}" disabled>${label} (Booked)</option>`
+          } else {
+            slot_options += `<option value="${i}">${label} (Available)</option>`
+          }
+        }
+
+        document.getElementById('reservation_slot').innerHTML = slot_options
+        if (bookings === '') {
+          bookings = `<div class="empty-bookings-notice"><i class="fa-regular fa-circle-check"></i><p>No bookings yet for this date. All slots (11:00 AM – 7:00 PM) are available!</p></div>`
+        }
+        document.getElementById('bookings').innerHTML = bookings
+      })
+      .catch(err => {
+        console.error("Error fetching bookings:", err)
+      })
+  }
+
+  function formatTime(time) {
+    const ampm = time < 12 ? 'AM' : 'PM'
+    const t = time < 12 ? time : time > 12 ? time - 12 : time
+    const label = `${t}:00 ${ampm}`
+    return label
+  }
+
+  document.getElementById('button').addEventListener('click', function (e) {
+    const nameInput = document.getElementById('first_name');
+    const slotSelect = document.getElementById('reservation_slot');
+    const alertBox = document.getElementById('booking-alert');
+
+    // Friendly client-side check
+    if (!nameInput.value.trim()) {
+      showAlert('Please enter your name before reserving.', 'error');
+      nameInput.focus();
+      return;
+    }
+
+    if (!slotSelect.value || slotSelect.value === '0') {
+      showAlert('Please select an available reservation time slot.', 'error');
+      slotSelect.focus();
+      return;
+    }
+
+    const submitBtn = document.getElementById('button');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Reserving...';
+
+    const formdata = {
+      first_name: nameInput.value.trim(),
+      reservation_date: document.getElementById('reservation_date').value,
+      reservation_slot: parseInt(slotSelect.value, 10),
+    }
+
+    fetch("{% url 'bookings' %}", {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formdata)
+    })
+      .then(r => r.json().catch(() => r.text()))
+      .then(data => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> Reserve Table';
+
+        if (typeof data === 'object' && data.error) {
+          showAlert('This slot is already reserved for the selected date. Please choose another slot.', 'error');
+        } else {
+          showAlert(`Thank you, ${formdata.first_name}! Your table has been reserved for ${formatTime(formdata.reservation_slot)}.`, 'success');
+          nameInput.value = '';
+          getBookings();
+        }
+      })
+      .catch(err => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> Reserve Table';
+        console.error("Reservation error:", err);
+        showAlert('An error occurred while making the reservation. Please try again.', 'error');
+      });
+  });
+
+  function showAlert(msg, type) {
+    const alertBox = document.getElementById('booking-alert');
+    if (!alertBox) return;
+    alertBox.className = `booking-alert alert-${type}`;
+    alertBox.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation'}"></i> <span>${msg}</span>`;
+    alertBox.style.display = 'flex';
+    setTimeout(() => {
+      alertBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
+  }
+</script>
+{% endblock %}

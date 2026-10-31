@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="about-hero">
+  <div class="page-header text-center">
+    <span class="subheading-tag"><i class="fa-solid fa-lemon"></i> Our Heritage &amp; Passion</span>
+    <h1>About Little Lemon</h1>
+    <p class="lead-text">
+      Crafting unforgettable Mediterranean dining experiences in Chicago since 1995.
+    </p>
+  </div>
+</section>
+
+<section class="about-main-section">
+  <article class="about-article-card">
+    <!--Begin row-->
+    <div class="row about-row">
+      <!--Begin col-->
+      <div class="column about-text-column">
+        <div class="story-highlight-badge">
+          <i class="fa-solid fa-heart"></i> A Family-Owned Culinary Journey
+        </div>
+        <p class="story-lead">
+          Based in Chicago, Illinois, <strong>Little Lemon</strong> is a family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.
+        </p>
+        <p>
+          The chefs draw inspiration from Italian, Greek, and Turkish culture and have a menu of 12-15 items that they rotate seasonally.
+        </p>
+        <p>
+          The restaurant has a rustic and relaxed atmosphere with moderate prices, making it a popular place for a meal any time of the day.
+        </p>
+        <div class="story-quote-box">
+          <p class="quote-italic">
+            &ldquo;Little Lemon is owned by two Italian brothers, Mario and Adrian, who moved to the United States to pursue their shared dream of owning a restaurant.&rdquo;
+          </p>
+        </div>
+        <div class="brothers-grid">
+          <div class="brother-card">
+            <div class="brother-icon"><i class="fa-solid fa-hat-chef"></i></div>
+            <h4>Mario &bull; Executive Chef</h4>
+            <p>
+              To craft the menu, Mario relies on family recipes and his experience as a chef in Italy.
+            </p>
+          </div>
+          <div class="brother-card">
+            <div class="brother-icon"><i class="fa-solid fa-bullhorn"></i></div>
+            <h4>Adrian &bull; Director &amp; Marketing</h4>
+            <p>
+              Adrian does all the marketing for the restaurant and led the effort to expand the menu beyond classic Italian to incorporate additional cuisines from the mediterranean region.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--End col-->
+
+      <!--Begin col-->
+      <div class="column about-image-column">
+        <div class="figure-wrapper">
+          <figure class="figure">
+            <div class="image-frame">
+              <img
+                src="{% static 'img/mario-and-adrian.jpg' %}"
+                alt="Mario and Adrian"
+                class="founders-img"
+              />
+            </div>
+            <figcaption class="figure-caption">
+              <i class="fa-solid fa-camera"></i> Little Lemon owners Mario and Adrian in their Chicago kitchen.
+            </figcaption>
+          </figure>
+          
+          <div class="about-secondary-images">
+            <img src="{% static 'img/restaurant_inside.jpg' %}" alt="Dining room interior" class="thumb-img" />
+            <img src="{% static 'img/restaurant food.jpg' %}" alt="Plated Mediterranean dish" class="thumb-img" />
+          </div>
+        </div>
+      </div>
+      <!--End col-->
+    </div>
+    <!--End row-->
+
+    <!-- Stats Counter Bar -->
+    <div class="stats-bar">
+      <div class="stat-box">
+        <span class="stat-number">25+</span>
+        <span class="stat-label">Years in Chicago</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number">3</span>
+        <span class="stat-label">Heritage Cuisines</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number">100%</span>
+        <span class="stat-label">Authentic Recipes</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number">50K+</span>
+        <span class="stat-label">Guests Welcomed</span>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- Call to action block -->
+<section class="about-cta-banner">
+  <div class="about-cta-content">
+    <h2>Taste the Tradition for Yourself</h2>
+    <p>Join Mario &amp; Adrian for lunch or dinner. We can't wait to welcome you.</p>
+    <div class="about-cta-actions">
+      <a href="{% url 'book' %}" class="cta btn-primary-cta"><i class="fa-regular fa-calendar-check"></i> Reserve a Table</a>
+      <a href="{% url 'menu' %}" class="btn-secondary-cta"><i class="fa-solid fa-utensils"></i> Explore Our Menu</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% load static %}
+<footer class="site-footer">
+  <div class="site-container footer-content-grid">
+    <article class="footer-col brand-col">
+      <img src="{% static 'img/logo_footer.png' %}" alt="Little Lemon" class="footer-logo" />
+      <p class="brand-desc">
+        A family-owned Mediterranean restaurant based in Chicago, Illinois. Focused on traditional recipes served with a
+        modern twist.
+      </p>
+      <div class="social-links" aria-label="Social media links">
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i
+            class="fa-brands fa-instagram"></i></a>
+        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i
+            class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://tripadvisor.com" target="_blank" rel="noopener noreferrer" aria-label="TripAdvisor"><i
+            class="fa-solid fa-umbrella-beach"></i></a>
+        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="X"><i
+            class="fa-brands fa-x-twitter"></i></a>
+      </div>
+    </article>
+
+    <article class="footer-col">
+      <h3 class="footer-title">Navigation</h3>
+      <ul class="footer-links">
+        <li><a href="{% url 'home' %}"><i class="fa-solid fa-angle-right"></i> Home</a></li>
+        <li><a href="{% url 'about' %}"><i class="fa-solid fa-angle-right"></i> About Us</a></li>
+        <li><a href="{% url 'menu' %}"><i class="fa-solid fa-angle-right"></i> Seasonal Menu</a></li>
+        <li><a href="{% url 'book' %}"><i class="fa-solid fa-angle-right"></i> Book a Table</a></li>
+        <li><a href="{% url 'reservations' %}"><i class="fa-solid fa-angle-right"></i> View Reservations</a></li>
+      </ul>
+    </article>
+
+    <article class="footer-col">
+      <h3 class="footer-title">Contact & Location</h3>
+      <ul class="footer-contact-list">
+        <li>
+          <i class="fa-solid fa-location-dot"></i>
+          <span>Hyde Park, Chicago, IL 60637</span>
+        </li>
+        <li>
+          <i class="fa-solid fa-phone"></i>
+          <span>(312) 555-LEMON (5366)</span>
+        </li>
+        <li>
+          <i class="fa-solid fa-envelope"></i>
+          <span>contact@littlelemonchicago.com</span>
+        </li>
+      </ul>
+    </article>
+
+    <article class="footer-col">
+      <h3 class="footer-title">Hours of Service</h3>
+      <ul class="footer-hours-list">
+        <li>
+          <span class="days">Monday – Friday:</span>
+          <span class="time">2:00 PM – 10:00 PM</span>
+        </li>
+        <li>
+          <span class="days">Saturday:</span>
+          <span class="time">2:00 PM – 11:00 PM</span>
+        </li>
+        <li>
+          <span class="days">Sunday:</span>
+          <span class="time">2:00 PM – 9:00 PM</span>
+        </li>
+      </ul>
+    </article>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="site-container footer-bottom-inner">
+      <p>Copyright Little Lemon &copy; 2026. All rights reserved.</p>
+      <div class="footer-badge">
+        <span>Handcrafted with Mediterranean Passion</span>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#495E57" />
+
+    <title>{% block title %}Little Lemon | Mediterranean Restaurant Chicago{% endblock %}</title>
+    <meta
+      name="description"
+      content="Based in Chicago, Illinois, Little Lemon is a family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist."
+    />
+    <meta
+      name="author"
+      content="Little Lemon Restaurant"
+    />
+
+    <!-- Favicon -->
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="{% static 'img/favicon.ico' %}"
+    />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Markazi+Text:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+
+  <body>
+    <!-- Top announcement banner -->
+    <aside class="top-announcement" aria-label="Special promotion">
+      <div class="site-container announcement-content">
+        <span><i class="fa-solid fa-lemon text-yellow"></i> <strong>Special Offer:</strong> 30% off your first dine-in reservation this weekend!</span>
+        <a href="{% url 'book' %}" class="announcement-link">Book Now <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </aside>
+
+    <!-- Header navigation -->
+    {% include 'partials/_header.html' %}
+
+    <!-- Main content -->
+    <main id="main-content" class="site-container">
+      {% block content %} {% endblock %}
+    </main>
+
+    <!-- Footer content -->
+    {% include 'partials/_footer.html' %}
+
+    <!-- Global interactive script (mobile navigation & helpers) -->
+    <script>
+      // Mobile navigation toggle
+      const navToggle = document.getElementById('nav-toggle');
+      const navMenu = document.getElementById('nav-menu');
+      if (navToggle && navMenu) {
+        navToggle.addEventListener('click', () => {
+          const isOpen = navMenu.classList.toggle('active');
+          navToggle.setAttribute('aria-expanded', isOpen);
+          navToggle.querySelector('i').className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+        });
+      }
+
+      // Highlight active nav link based on current path
+      const currentPath = window.location.pathname;
+      document.querySelectorAll('nav ul li a').forEach(link => {
+        const linkPath = link.getAttribute('href');
+        if (linkPath === currentPath || (linkPath !== '/' && currentPath.startsWith(linkPath))) {
+          link.classList.add('active');
+        }
+      });
+    </script>
+  </body>
+</html>

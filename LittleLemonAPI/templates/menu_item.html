@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="dish-detail-section">
+   <article class="dish-detail-card">
+      <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+         <a href="{% url 'home' %}"><i class="fa-solid fa-house"></i> Home</a>
+         <span class="breadcrumb-separator"><i class="fa-solid fa-chevron-right"></i></span>
+         <a href="{% url 'menu' %}"><i class="fa-solid fa-utensils"></i> Menu</a>
+         <span class="breadcrumb-separator"><i class="fa-solid fa-chevron-right"></i></span>
+         <span class="current-crumb">{{ menu_item.name }}</span>
+      </nav>
+
+      <h1 class="dish-page-heading">Menu item</h1>
+
+      <!--Begin row-->
+      <div class="row dish-detail-row">
+         <!--Begin col: Dish Information-->
+         <div class="column dish-info-column">
+            <div class="dish-badges-row">
+               <span class="dish-badge specialty"><i class="fa-solid fa-lemon"></i> Little Lemon Specialty</span>
+               <span class="dish-badge fresh"><i class="fa-solid fa-seedling"></i> Farm Fresh</span>
+            </div>
+
+            <h2 class="dish-item-name">
+               {{ menu_item.name }}
+            </h2>
+
+            <div class="dish-price-banner">
+               <span class="price-label">Price:</span>
+               <span class="price-value">${{ menu_item.price }}.00</span>
+               <span class="tax-note">Tax included</span>
+            </div>
+
+            <div class="dish-desc-box">
+               <h4><i class="fa-solid fa-circle-info"></i> Dish Description</h4>
+               <p class="dish-desc-text">
+                  {{ menu_item.menu_item_description }}
+               </p>
+            </div>
+
+            <div class="dish-attributes-grid">
+               <div class="attr-item">
+                  <i class="fa-solid fa-wheat-awn-circle-exclamation"></i>
+                  <span>Authentic Recipe</span>
+               </div>
+               <div class="attr-item">
+                  <i class="fa-solid fa-mortar-pestle"></i>
+                  <span>Made to Order</span>
+               </div>
+               <div class="attr-item">
+                  <i class="fa-solid fa-heart-pulse"></i>
+                  <span>Healthy &amp; Fresh</span>
+               </div>
+               <div class="attr-item">
+                  <i class="fa-solid fa-clock"></i>
+                  <span>15–20 Mins Prep</span>
+               </div>
+            </div>
+
+            <div class="dish-detail-actions">
+               <a href="{% url 'book' %}" class="cta btn-primary-cta">
+                  <i class="fa-regular fa-calendar-check"></i> Book a Table to Taste
+               </a>
+               <a href="{% url 'menu' %}" class="btn-secondary-cta">
+                  <i class="fa-solid fa-arrow-left"></i> Back to Menu
+               </a>
+            </div>
+         </div>
+         <!--End col-->
+
+         <!--Begin col: Dish Image Showcase-->
+         <div class="column dish-image-column">
+            <div class="dish-image-frame">
+               <img src="{% static 'img/menu_items/' %}{{ menu_item.name }}.jpg"
+                  onerror="this.onerror=null; this.src='{% static 'img/restaurant food.jpg' %}';"
+                  alt="{{ menu_item.name }}" class="dish-showcase-image" />
+               <div class="chef-recommendation-tag">
+                  <i class="fa-solid fa-star"></i> Chef's Recommendation
+               </div>
+            </div>
+
+            <div class="dish-pairing-card">
+               <h4><i class="fa-solid fa-wine-glass"></i> Sommelier Pairing</h4>
+               <p>Pairs wonderfully with our crisp Santorini Assyrtiko or a chilled Italian Pinot Grigio.</p>
+            </div>
+         </div>
+         <!--End col-->
+      </div>
+      <!--End row-->
+   </article>
+</section>
+{% endblock %}

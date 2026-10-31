@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+  <article id="hero" class="hero-card">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <i class="fa-solid fa-lemon"></i>
+        <span>Authentic Mediterranean Cuisine &bull; Chicago</span>
+      </div>
+      <h1 class="heading_shadow">Little Lemon</h1>
+      <h2 class="hero-subtitle">Chicago, Illinois</h2>
+      <p class="hero-tagline">
+        We are a family-owned Mediterranean restaurant, focused on traditional recipes served with a modern twist. Enjoy
+        <strong>30% Off This Weekend</strong> on all reservations!
+      </p>
+      <div class="hero-actions">
+        <a href="{% url 'book' %}" class="cta btn-primary-cta">
+          <i class="fa-regular fa-calendar-check"></i> Book Now
+        </a>
+        <a href="{% url 'menu' %}" class="btn-secondary-cta">
+          <i class="fa-solid fa-book-open"></i> Explore Menu
+        </a>
+      </div>
+      <div class="hero-ratings">
+        <div class="stars">
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+        </div>
+        <span><strong>4.9/5</strong> rating from 1,400+ happy diners in Hyde Park</span>
+      </div>
+    </div>
+    <div class="hero-image-wrap">
+      <img src="{% static 'img/restaurant food B.jpg' %}" alt="Delicious Mediterranean Dishes at Little Lemon"
+        class="hero-featured-image" />
+      <div class="floating-promo-badge">
+        <span class="promo-discount">30% OFF</span>
+        <span class="promo-label">This Weekend</span>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- Values Bar -->
+<section class="values-bar">
+  <div class="value-item">
+    <div class="value-icon"><i class="fa-solid fa-seedling"></i></div>
+    <div class="value-text">
+      <h4>Fresh Ingredients</h4>
+      <p>Sourced daily from local and Mediterranean growers</p>
+    </div>
+  </div>
+  <div class="value-item">
+    <div class="value-icon"><i class="fa-solid fa-fire-burner"></i></div>
+    <div class="value-text">
+      <h4>Authentic Recipes</h4>
+      <p>Centuries-old Greek, Italian &amp; Turkish traditions</p>
+    </div>
+  </div>
+  <div class="value-item">
+    <div class="value-icon"><i class="fa-solid fa-wine-glass"></i></div>
+    <div class="value-text">
+      <h4>Relaxed Atmosphere</h4>
+      <p>Rustic charm and warm Mediterranean hospitality</p>
+    </div>
+  </div>
+  <div class="value-item">
+    <div class="value-icon"><i class="fa-solid fa-award"></i></div>
+    <div class="value-text">
+      <h4>Award Winning</h4>
+      <p>Voted Top Casual Dining Experience in Chicago</p>
+    </div>
+  </div>
+</section>
+
+<!-- Main Feature Cards -->
+<section class="feature-cards-section">
+  <article class="feature-card">
+    <div class="card-image-container">
+      <img src="{% static 'img/grill.jpg' %}" alt="Our New Mediterranean Menu" />
+      <span class="card-badge">Seasonal</span>
+    </div>
+    <div class="card-body">
+      <h2>Our New Menu</h2>
+      <p>
+        Our menu consists of 12-15 seasonal items based on Italian, Greek, and Turkish culture crafted by chef Mario.
+      </p>
+      <div class="card-action">
+        <a href="{% url 'menu' %}" class="card-link-btn">
+          <span>See our new menu</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </article>
+
+  <article class="feature-card highlight-card">
+    <div class="card-image-container">
+      <img src="{% static 'img/salad.jpg' %}" alt="Reserve a table at Little Lemon" />
+      <span class="card-badge promo">Instant Booking</span>
+    </div>
+    <div class="card-body">
+      <h2>Book a table</h2>
+      <p>
+        Reserve your table for an authentic Italian, Greek, and Turkish dining experience with loved ones.
+      </p>
+      <div class="card-action">
+        <a href="{% url 'book' %}" class="card-link-btn primary">
+          <span>Book your table now</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </article>
+
+  <article class="feature-card">
+    <div class="card-image-container">
+      <img src="{% static 'img/head_chef.jpg' %}" alt="Little Lemon Head Chef" />
+      <span class="card-badge info">Welcome</span>
+    </div>
+    <div class="card-body">
+      <h2>Opening Hours</h2>
+      <p>
+        The Little Lemon Restaurant is open 7 days a week, welcoming you every afternoon and evening.
+      </p>
+      <ul class="hours-badge-list">
+        <li>
+          <span class="day-label"><i class="fa-regular fa-clock"></i> Mon – Fri:</span>
+          <span class="time-label">2:00 PM – 10:00 PM</span>
+        </li>
+        <li>
+          <span class="day-label"><i class="fa-regular fa-clock"></i> Saturday:</span>
+          <span class="time-label">2:00 PM – 11:00 PM</span>
+        </li>
+        <li>
+          <span class="day-label"><i class="fa-regular fa-clock"></i> Sunday:</span>
+          <span class="time-label">2:00 PM – 9:00 PM</span>
+        </li>
+      </ul>
+      <div class="card-action">
+        <a href="{% url 'about' %}" class="card-link-btn">
+          <span>Learn our story</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- Chef Quote / Testimonial Banner -->
+<section class="testimonial-section">
+  <div class="testimonial-card">
+    <div class="quote-mark"><i class="fa-solid fa-quote-left"></i></div>
+    <p class="quote-text">
+      &ldquo;At Little Lemon, food is more than a meal &mdash; it's a celebration of Mediterranean culture, warmth, and
+      family heritage shared with every guest who walks through our doors.&rdquo;
+    </p>
+    <div class="quote-author">
+      <img src="{% static 'img/restaurant chef C.jpg' %}" alt="Mario & Adrian" class="author-avatar" />
+      <div>
+        <h4 class="author-name">Mario &amp; Adrian</h4>
+        <span class="author-title">Co-Founders &amp; Executive Chefs</span>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

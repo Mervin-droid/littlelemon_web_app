@@ -1,0 +1,33 @@
+{% load static %}
+<header class="site-header">
+  <div class="site-container header-inner">
+    <a href="{% url 'home' %}" class="brand-logo" aria-label="Little Lemon Home">
+      <img src="{% static 'img/logo.png' %}" alt="Little Lemon Restaurant" />
+    </a>
+
+    <button id="nav-toggle" class="nav-toggle" type="button" aria-label="Toggle navigation menu" aria-expanded="false"
+      aria-controls="nav-menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <nav id="nav-menu" class="main-nav" aria-label="Main Navigation">
+      <ul class="nav-list">
+        <li class="nav-item"><a href="{% url 'home' %}" class="nav-link"><i class="fa-solid fa-house-chimney"></i>
+            Home</a></li>
+        <li class="nav-item"><a href="{% url 'about' %}" class="nav-link"><i class="fa-solid fa-circle-info"></i>
+            About</a></li>
+        <li class="nav-item"><a href="{% url 'menu' %}" class="nav-link"><i class="fa-solid fa-utensils"></i> Menu</a>
+        </li>
+        <li class="nav-item"><a href="{% url 'book' %}" class="nav-link"><i class="fa-regular fa-calendar-check"></i>
+            Book</a></li>
+        <li class="nav-item"><a href="{% url 'reservations' %}" class="nav-link"><i class="fa-solid fa-list-check"></i>
+            Reservations</a></li>
+      </ul>
+      <div class="nav-cta-wrapper">
+        <a href="{% url 'book' %}" class="btn-header-cta">
+          <i class="fa-solid fa-chair"></i> Reserve a Table
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>

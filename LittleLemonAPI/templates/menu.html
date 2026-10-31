@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="menu-page-header">
+  <div class="page-header text-center">
+    <span class="subheading-tag"><i class="fa-solid fa-utensils"></i> Mediterranean Specialties</span>
+    <h1>Our Seasonal Menu</h1>
+    <p class="lead-text">
+      Handcrafted daily using traditional Italian, Greek, and Turkish recipes passed down through generations.
+    </p>
+  </div>
+</section>
+
+<!-- Category quick filter pills -->
+<div class="menu-filter-bar">
+  <button class="filter-chip active" data-category="all"><i class="fa-solid fa-border-all"></i> All Dishes</button>
+  <button class="filter-chip" data-category="starter"><i class="fa-solid fa-leaf"></i> Starters &amp; Salads</button>
+  <button class="filter-chip" data-category="main"><i class="fa-solid fa-drumstick-bite"></i> Mains</button>
+  <button class="filter-chip" data-category="dessert"><i class="fa-solid fa-cake-candles"></i> Desserts</button>
+</div>
+
+<!-- Main Menu Grid -->
+<section class="menu-grid-section">
+  <!--Begin col-->
+  <div class="column menu-cards-grid">
+    {% for item in menu.menu %}
+    <article class="menu-item-card" data-dish="{{ item.name|lower }}">
+      <div class="menu-card-img-wrapper">
+        <img
+          src="{% static 'img/menu_items/' %}{{ item.name }}.jpg"
+          onerror="this.onerror=null; this.src='{% static 'img/restaurant food.jpg' %}';"
+          alt="{{ item.name }}"
+          class="menu-card-img"
+        />
+        <span class="menu-price-pill">
+          ${{ item.price }}.00
+        </span>
+      </div>
+
+      <div class="menu-card-content">
+        <div class="dish-header">
+          <h3 class="dish-title">
+            <a href="{% url 'menu_item' pk=item.pk %}" class="dish-title-link">
+              {{ item.name }}
+            </a>
+          </h3>
+          <span class="menu-price visually-hidden">
+            ${{ item.price }}.00
+          </span>
+        </div>
+
+        <p class="dish-description">
+          {{ item.menu_item_description|default:"A delicious traditional Mediterranean creation made with authentic regional ingredients." }}
+        </p>
+
+        <div class="menu-card-footer">
+          <a href="{% url 'menu_item' pk=item.pk %}" class="btn-dish-details">
+            <span>View Details</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <a href="{% url 'book' %}" class="btn-dish-order" title="Book a table to taste this dish">
+            <i class="fa-regular fa-calendar-check"></i> Reserve
+          </a>
+        </div>
+      </div>
+    </article>
+    {% empty %}
+    <div class="empty-menu-notice">
+      <i class="fa-solid fa-utensils"></i>
+      <h3>Menu is being updated!</h3>
+      <p>Our chefs are preparing fresh seasonal items. Please check back shortly.</p>
+    </div>
+    {% endfor %}
+  </div>
+  <!--End col-->
+</section>
+
+<!-- Menu CTA Banner -->
+<section class="menu-cta-banner">
+  <div class="menu-cta-inner">
+    <div class="cta-text">
+      <h3>Ready to Experience Chicago's Best Mediterranean Flavors?</h3>
+      <p>Reserve your table today and receive 30% off your weekend dining experience.</p>
+    </div>
+    <div class="cta-actions">
+      <a href="{% url 'book' %}" class="cta btn-primary-cta"><i class="fa-solid fa-chair"></i> Reserve a Table</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Filter chips functionality
+  const filterChips = document.querySelectorAll('.filter-chip');
+  const menuCards = document.querySelectorAll('.menu-item-card');
+
+  filterChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      filterChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+
+      const cat = chip.dataset.category;
+      menuCards.forEach(card => {
+        const dish = card.dataset.dish || '';
+        if (cat === 'all') {
+          card.style.display = 'flex';
+        } else if (cat === 'starter' && (dish.includes('salad') || dish.includes('bruschetta') || dish.includes('soup'))) {
+          card.style.display = 'flex';
+        } else if (cat === 'main' && (dish.includes('fish') || dish.includes('grill') || dish.includes('pasta') || dish.includes('meat'))) {
+          card.style.display = 'flex';
+        } else if (cat === 'dessert' && (dish.includes('dessert') || dish.includes('cake') || dish.includes('lemon'))) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}
